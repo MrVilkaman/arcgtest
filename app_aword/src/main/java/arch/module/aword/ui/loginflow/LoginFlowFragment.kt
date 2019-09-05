@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import arch.module.auth.di.FlowLoginComponent
 import arch.module.aword.R
+import arch.module.aword.di.delegates.LoginFlowInjector
 import arch.module.core.di.PerScreen
 import arch.module.core.di.modules.FlowNavigatorHolder
 import arch.module.core.di.modules.FlowRouter
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 
 @PerScreen
-class LoginFlowFragment : FlowFragment<LoginFlowPresenter>(), ILoginFlowView {
+class LoginFlowFragment : FlowFragment<LoginFlowPresenter>(LoginFlowInjector), ILoginFlowView {
 
 
     companion object {
@@ -43,11 +44,6 @@ class LoginFlowFragment : FlowFragment<LoginFlowPresenter>(), ILoginFlowView {
     lateinit var navigatorHolder: NavigatorHolder
 
     private val navigator by lazy { LoginFlowNavigator(globalRouter, childFragmentManager, this) }
-
-
-    override fun diInject() {
-        FlowLoginComponent.init(context!!).inject(this)
-    }
 
     override fun getLayoutId(): Int = R.layout.fragment_loginflow_layout
 

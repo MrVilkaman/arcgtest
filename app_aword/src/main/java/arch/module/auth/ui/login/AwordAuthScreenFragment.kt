@@ -1,11 +1,6 @@
 package arch.module.auth.ui.login
 
 import arch.module.auth.di.AwordAuthComponent
+import arch.module.auth.di.delegates.AwordAuthScreenInjector
 
-class AwordAuthScreenFragment : AuthScreenFragment() {
-    override fun diInject() {
-        AwordAuthComponent.init(
-            context!!
-        ).inject(this)
-    }
-}
+class AwordAuthScreenFragment : AuthScreenFragment(AwordAuthScreenInjector) {}

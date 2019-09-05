@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
+import arch.module.core.di.delegates.InjectorDelegate
 import arch.module.core.other.NestedNavigation
 import dagger.MembersInjector
 import moxy.MvpAppCompatFragment
@@ -15,9 +16,10 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 
-abstract class BaseFragment<P : BasePresenter<*>>
+abstract class BaseFragment<P : BasePresenter<*>>(injectorDelegate: InjectorDelegate<out Any>)
     : MvpAppCompatFragment(),
-    NestedNavigation {
+    NestedNavigation,
+    InjectorDelegate<Any> by injectorDelegate as InjectorDelegate<Any> {
 
     abstract fun getLayoutId(): Int
 
@@ -32,11 +34,9 @@ abstract class BaseFragment<P : BasePresenter<*>>
     open fun providePresenter(): P = presenterProvider.get()
 
     override fun onAttach(activity: Context) {
-        diInject()
+        diInject(activity, this)
         super.onAttach(activity)
     }
-
-    abstract fun diInject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getLayoutId(), container, false)
