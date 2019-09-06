@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 
+//давайте всё-таки сохраним кэмелкейс в названии файла?
 
 val EditText?.trimmedText: String
     get() {

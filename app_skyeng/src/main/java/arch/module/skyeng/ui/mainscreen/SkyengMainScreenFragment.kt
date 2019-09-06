@@ -2,10 +2,9 @@ package arch.module.skyeng.ui.mainscreen
 
 import android.os.Bundle
 import android.view.View
-import arch.module.core.di.findComponentDependencies
 import arch.module.core.ui.base.BaseFragment
 import arch.module.skyeng.R
-import arch.module.skyeng.di.SkyengMainScreenComponent
+import arch.module.skyeng.di.delegates.SkyengMainScreenInjector
 import arch.module.userprofile.ui.UserProfileInformerWidget
 import dagger.MembersInjector
 import kotlinx.android.synthetic.main.fragment_skyeng_main_screen.*
@@ -15,7 +14,9 @@ import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
 
-internal class SkyengMainScreenFragment : BaseFragment<SkyengMainScreenPresenter>(),
+internal class SkyengMainScreenFragment : BaseFragment<SkyengMainScreenPresenter>(
+    SkyengMainScreenInjector
+),
     ISkyengMainScreenView {
 
     @InjectPresenter
@@ -25,10 +26,6 @@ internal class SkyengMainScreenFragment : BaseFragment<SkyengMainScreenPresenter
     override fun providePresenter(): SkyengMainScreenPresenter = super.providePresenter()
 
     override fun getLayoutId(): Int = R.layout.fragment_skyeng_main_screen
-
-    override fun diInject() {
-        SkyengMainScreenComponent.init(context!!, findComponentDependencies()).inject(this)
-    }
 
     @Inject
     lateinit var userProfileInformerWidgetMembersInjector: MembersInjector<UserProfileInformerWidget>

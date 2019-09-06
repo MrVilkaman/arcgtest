@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.View
 import arch.module.aword.R
 import arch.module.aword.di.AwordAppComponent.Companion.appComponent
+import arch.module.aword.di.delegates.WelcomeInjector
 import arch.module.aword.ui.root.AwordActivity
 import arch.module.core.di.PerScreen
 import arch.module.core.ui.base.BaseFragment
@@ -22,7 +23,7 @@ import moxy.viewstate.strategy.SkipStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @PerScreen
-class WelcomeFragment : BaseFragment<WelcomePresenter>(), IWelcomeView {
+class WelcomeFragment : BaseFragment<WelcomePresenter>(WelcomeInjector), IWelcomeView {
 
     companion object {
         fun newInstance() = WelcomeFragment()
@@ -38,11 +39,6 @@ class WelcomeFragment : BaseFragment<WelcomePresenter>(), IWelcomeView {
     override fun providePresenter(): WelcomePresenter = super.providePresenter()
 
     override fun getLayoutId(): Int = R.layout.fragment_welcome_layout
-
-    override fun diInject() {
-        appComponent.welcomeComponentBuilder()
-            .build().inject(this)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         go.setOnClickListener {
