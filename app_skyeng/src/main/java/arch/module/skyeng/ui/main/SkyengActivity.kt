@@ -9,6 +9,7 @@ import arch.module.skyeng.coordinators.Out
 import arch.module.skyeng.coordinators.RootCoordinator
 import arch.module.skyeng.di.Navigation
 import arch.module.skyeng.di.SkyengNavigator
+import arch.module.skyeng.utils.ZhepkaException
 
 
 class SkyengActivity : AppCompatActivity(), IGetOutProvider {
@@ -24,16 +25,23 @@ class SkyengActivity : AppCompatActivity(), IGetOutProvider {
     override fun provideOut(): Out = popOut()
 
     private fun popOut(): Out {
-        val local: Any = out ?: throw IllegalAccessException("жёпка =(")
+        val local: Any = out ?: throw ZhepkaException()
         out = null
         return local
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        val wasZhepka: Boolean = try {
+            super.onCreate(savedInstanceState)
+            false
+        } catch (e: ZhepkaException) {
+            // мимикрия под iOS (андрей сказал норм)
+            // ошибка потому что фрагменты восстанавливаются, а лямбды - нет
+            true
+        }
         setContentView(R.layout.layout_skyeng)
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || wasZhepka) {
             Toast.makeText(this, "cold start", Toast.LENGTH_SHORT).show()
             rootCoordinator.showStartScreen()
         }
@@ -51,7 +59,6 @@ class SkyengActivity : AppCompatActivity(), IGetOutProvider {
         super.onPause()
         navigatorHolder.removeNavigator()
     }
-
 
 
     override fun onBackPressed() {
