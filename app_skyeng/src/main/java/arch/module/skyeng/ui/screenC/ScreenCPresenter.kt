@@ -5,6 +5,8 @@ import moxy.InjectViewState
 import moxy.MvpView
 import javax.inject.Inject
 
+typealias ScreenCOut = (ScreenCOutCmd) -> Unit
+
 interface IScreenCView : MvpView
 
 sealed class ScreenCOutCmd
@@ -14,7 +16,7 @@ object ContinuePressed : ScreenCOutCmd()
 
 @InjectViewState
 class ScreenCPresenter @Inject constructor(
-    private val cmd: (ScreenCOutCmd) -> Unit
+    private val cmd: ScreenCOut
 ) : BasePresenter<IScreenCView>() {
     fun onClickContinue() {
         cmd(ContinuePressed)

@@ -3,6 +3,8 @@ package arch.module.skyeng.ui.screenA
 import arch.module.skyeng.ui.base.BasePresenter
 import moxy.InjectViewState
 
+typealias ScreenAOut = (ScreenAOutCmd) -> Unit
+
 sealed class ScreenAOutCmd
 
 object GoPressed : ScreenAOutCmd()
@@ -20,7 +22,7 @@ interface ScreenAIn {
 
 @InjectViewState
 class ScreenAPresenter constructor(
-    private val out: (ScreenAOutCmd) -> Unit
+    private val out: ScreenAOut
 ) : BasePresenter<IScreenAView>(),
     ScreenAIn {
     override fun onFirstViewAttach() {

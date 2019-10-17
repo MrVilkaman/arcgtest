@@ -24,7 +24,7 @@ ext {
 
             rxandroid         : "2.1.1",
             rxjava            : "2.2.8",
-            cicerone          : "3.0.0",
+            cicerone          : "5.0.0",
             preferences2      : "2.0.0",
             textdrawable      : "1.0.1",
             runtime_permission: "1.0.5",

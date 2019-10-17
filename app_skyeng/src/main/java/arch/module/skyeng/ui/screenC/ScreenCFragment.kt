@@ -2,26 +2,32 @@ package arch.module.skyeng.ui.screenC;
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import arch.module.skyeng.R
 import arch.module.skyeng.ui.base.BaseFragment
-import arch.module.skyeng.utils.ext.provideOut
 import kotlinx.android.synthetic.main.fragment_screenc_layout.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import ru.terrakok.cicerone.android.support.SupportAppScreen
 
-
-class ScreenCFragment : BaseFragment<IScreenCView, ScreenCPresenter>(), IScreenCView {
-
-    companion object {
-        fun newInstance() = ScreenCFragment()
+class ScreenC(
+    private val out: ScreenCOut
+) : SupportAppScreen() {
+    override fun getFragment(): Fragment {
+        return ScreenCFragment(out)
     }
+}
+
+class ScreenCFragment(
+    private val out: ScreenCOut? = null
+) : BaseFragment<IScreenCView, ScreenCPresenter>(), IScreenCView {
 
     @InjectPresenter
     lateinit var presenter: ScreenCPresenter
 
     @ProvidePresenter
     fun providePresenter(): ScreenCPresenter = ScreenCPresenter(
-        context.provideOut()
+        out!!
     )
 
     override fun getLayoutId(): Int = R.layout.fragment_screenc_layout

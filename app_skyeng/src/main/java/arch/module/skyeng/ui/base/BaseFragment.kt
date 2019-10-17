@@ -1,6 +1,7 @@
 package arch.module.skyeng.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,4 +24,15 @@ abstract class BaseFragment<V : MvpView, P : BasePresenter<V>> : MvpAppCompatFra
 
 }
 
-abstract class BasePresenter<V : MvpView> : MvpPresenter<V>()
+abstract class BasePresenter<V : MvpView> : MvpPresenter<V>() {
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        Log.d("QWER", "$this onFirstViewAttach")
+    }
+
+    override fun onDestroy() {
+        Log.d("QWER", "$this onDestroy")
+        super.onDestroy()
+    }
+}

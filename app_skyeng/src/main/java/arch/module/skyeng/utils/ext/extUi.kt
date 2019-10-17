@@ -1,10 +1,7 @@
 package arch.module.skyeng.utils.ext
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import arch.module.skyeng.coordinators.IGetOutProvider
-import arch.module.skyeng.coordinators.Out
 
 
 inline fun <F : Fragment> F.withParam(block: Bundle.() -> Unit): F {
@@ -25,9 +22,4 @@ fun Fragment.getIntParam(key: String): Int {
 
 fun Fragment.getStringParam(key: String): String {
     return arguments?.getString(key) ?: throw IllegalStateException()
-}
-
-
-inline fun <reified T : Out> Context?.provideOut(): T {
-    return (this!! as IGetOutProvider).provideOut() as? T ?: throw IllegalArgumentException()
 }

@@ -4,31 +4,18 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import arch.module.skyeng.R
-import arch.module.skyeng.coordinators.IGetOutProvider
-import arch.module.skyeng.coordinators.Out
 import arch.module.skyeng.coordinators.RootCoordinator
 import arch.module.skyeng.di.Navigation
 import arch.module.skyeng.di.SkyengNavigator
 import arch.module.skyeng.utils.ZhepkaException
 
 
-class SkyengActivity : AppCompatActivity(), IGetOutProvider {
+class SkyengActivity : AppCompatActivity() {
 
     private val router = Navigation.instance.router
     private val navigatorHolder = Navigation.instance.navigatorHolder
 
-    private var out: Any? = null
-    private val rootCoordinator = RootCoordinator(router) { value ->
-        out = value
-    }
-
-    override fun provideOut(): Out = popOut()
-
-    private fun popOut(): Out {
-        val local: Any = out ?: throw ZhepkaException()
-        out = null
-        return local
-    }
+    private val rootCoordinator = RootCoordinator(router)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val wasZhepka: Boolean = try {

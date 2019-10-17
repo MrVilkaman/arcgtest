@@ -3,30 +3,34 @@ package arch.module.skyeng.ui.screenA;
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import arch.module.skyeng.R
 import arch.module.skyeng.ui.base.BaseFragment
 import arch.module.skyeng.ui.base.BasePresenter
-import arch.module.skyeng.utils.ext.provideOut
 import kotlinx.android.synthetic.main.fragment_screena_layout.*
 import moxy.MvpView
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
+import ru.terrakok.cicerone.android.support.SupportAppScreen
 
-
-class ScreenAFragment : BaseFragment<IScreenAView, BasePresenter<IScreenAView>>(), IScreenAView {
-
-    companion object {
-        fun newInstance() = ScreenAFragment()
+class ScreenA(private val out: ScreenAOut? = null) : SupportAppScreen() {
+    override fun getFragment(): Fragment {
+        return ScreenAFragment(out)
     }
+}
+
+class ScreenAFragment(
+    private val out: ScreenAOut? = null
+) : BaseFragment<IScreenAView, BasePresenter<IScreenAView>>(), IScreenAView {
 
     @InjectPresenter
     lateinit var presenter: ScreenAPresenter
 
     @ProvidePresenter
     fun providePresenter(): ScreenAPresenter = ScreenAPresenter(
-        context.provideOut()
+        out!!
     )
 
     override fun getLayoutId(): Int = R.layout.fragment_screena_layout
