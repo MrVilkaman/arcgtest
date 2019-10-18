@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import arch.module.skyeng.R
 import arch.module.skyeng.ui.base.BaseFragment
 import arch.module.skyeng.ui.base.BasePresenter
+import arch.module.skyeng.utils.ext.getOut
+import arch.module.skyeng.utils.ext.putOut
 import kotlinx.android.synthetic.main.fragment_screena_layout.*
 import moxy.MvpView
 import moxy.presenter.InjectPresenter
@@ -17,12 +19,12 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class ScreenA(private val out: ScreenAOut? = null) : SupportAppScreen() {
     override fun getFragment(): Fragment {
-        return ScreenAFragment(out)
+        require(out != null)
+        return ScreenAFragment().putOut(out)
     }
 }
 
 class ScreenAFragment(
-    private val out: ScreenAOut? = null
 ) : BaseFragment<IScreenAView, BasePresenter<IScreenAView>>(), IScreenAView {
 
     @InjectPresenter
@@ -30,7 +32,7 @@ class ScreenAFragment(
 
     @ProvidePresenter
     fun providePresenter(): ScreenAPresenter = ScreenAPresenter(
-        out!!
+        getOut()
     )
 
     override fun getLayoutId(): Int = R.layout.fragment_screena_layout

@@ -5,6 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import arch.module.skyeng.R
 import arch.module.skyeng.ui.base.BaseFragment
+import arch.module.skyeng.utils.ext.getOut
+import arch.module.skyeng.utils.ext.putOut
 import kotlinx.android.synthetic.main.fragment_screenc_layout.*
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -14,12 +16,11 @@ class ScreenC(
     private val out: ScreenCOut
 ) : SupportAppScreen() {
     override fun getFragment(): Fragment {
-        return ScreenCFragment(out)
+        return ScreenCFragment().putOut(out)
     }
 }
 
 class ScreenCFragment(
-    private val out: ScreenCOut? = null
 ) : BaseFragment<IScreenCView, ScreenCPresenter>(), IScreenCView {
 
     @InjectPresenter
@@ -27,7 +28,7 @@ class ScreenCFragment(
 
     @ProvidePresenter
     fun providePresenter(): ScreenCPresenter = ScreenCPresenter(
-        out!!
+        getOut()
     )
 
     override fun getLayoutId(): Int = R.layout.fragment_screenc_layout
