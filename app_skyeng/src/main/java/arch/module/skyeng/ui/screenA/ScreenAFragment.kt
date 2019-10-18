@@ -42,6 +42,9 @@ class ScreenAFragment(
         button2.setOnClickListener {
             presenter.openChildScreen()
         }
+        button3.setOnClickListener {
+            presenter.openReplace()
+        }
     }
 
     override fun showToast(counter: Int) {

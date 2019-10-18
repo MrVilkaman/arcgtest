@@ -39,6 +39,14 @@ class RootCoordinator(
                         }
                     }
                 }
+                is ReplacePressed -> router.replaceScreen(ScreenB { outB: ScreenBOutCmd ->
+                    when (outB) {
+                        is DonePressed -> {
+                            router.exit()
+                        }
+                    }
+                })
+
                 is OnCreate -> screenAIn = WeakReference(outA.input)
             }
         })

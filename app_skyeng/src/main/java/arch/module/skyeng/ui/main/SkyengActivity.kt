@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import arch.module.skyeng.R
-import arch.module.skyeng.coordinators.RootCoordinator
 import arch.module.skyeng.di.Navigation
 import arch.module.skyeng.di.SkyengNavigator
 import arch.module.skyeng.utils.ZhepkaException
@@ -12,10 +11,9 @@ import arch.module.skyeng.utils.ZhepkaException
 
 class SkyengActivity : AppCompatActivity() {
 
-    private val router = Navigation.instance.router
     private val navigatorHolder = Navigation.instance.navigatorHolder
 
-    private val rootCoordinator = RootCoordinator(router)
+    private val rootCoordinator = Navigation.instance.rootCoordinator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val wasZhepka: Boolean = try {
@@ -50,7 +48,7 @@ class SkyengActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.layout_child_fragment_container)
-
+//
 //        val isHandleByFragment = fragment is NestedNavigation && fragment.onBackPressed()
 //        if (!isHandleByFragment) {
         super.onBackPressed()

@@ -10,6 +10,8 @@ sealed class ScreenAOutCmd
 object GoPressed : ScreenAOutCmd()
 object ChildPressed : ScreenAOutCmd()
 
+object ReplacePressed : ScreenAOutCmd()
+
 class OnCreate(val input: ScreenAIn) : ScreenAOutCmd()
 
 
@@ -26,6 +28,7 @@ class ScreenAPresenter constructor(
 ) : BasePresenter<IScreenAView>(),
     ScreenAIn {
     override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
         out(OnCreate(this))
     }
 
@@ -36,6 +39,8 @@ class ScreenAPresenter constructor(
     fun openNextScreen() = out(GoPressed)
 
     fun openChildScreen() = out(ChildPressed)
+
+    fun openReplace() = out(ReplacePressed)
 
     override fun coordinatorDone() {
         viewState.coordinatorDone()
