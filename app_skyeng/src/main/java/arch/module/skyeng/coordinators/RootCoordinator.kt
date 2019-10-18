@@ -1,7 +1,6 @@
 package arch.module.skyeng.coordinators
 
 import android.util.Log
-import arch.module.skyeng.di.Navigation
 import arch.module.skyeng.ui.screenA.*
 import arch.module.skyeng.ui.screenB.DonePressed
 import arch.module.skyeng.ui.screenB.ScreenB
@@ -9,8 +8,14 @@ import arch.module.skyeng.ui.screenB.ScreenBOutCmd
 import ru.terrakok.cicerone.Router
 import java.lang.ref.WeakReference
 
+interface RootCoordDependencies {
+    val router: Router
+}
 
-class RootCoordinator : SerializableCoordinator() {
+class RootCoordinator : SerializableCoordinator<RootCoordDependencies>() {
+    override val clazz: Class<RootCoordDependencies>
+        get() = RootCoordDependencies::class.java
+
     init {
         Log.d("QWER", "$this RootCoordinator init")
     }
@@ -21,12 +26,14 @@ class RootCoordinator : SerializableCoordinator() {
 
     //todo не сериализуется WeakReference и после восстановления ссылка теряется =(
     @Transient
-    private var screenAIn: WeakReference<ScreenAIn> = WeakReference<ScreenAIn>(null)
+    private lateinit var screenAIn: WeakReference<ScreenAIn>
 
-    override fun initDeps() {
+    override fun initDeps(deps: RootCoordDependencies) {
+        screenAIn =
+            WeakReference<ScreenAIn>(null) // в поле инициализация не катит при восстановлении
+
         Log.d("QWER", "$this RootCoordinator initDeps")
-        //todo подумать как прокидывать зависимости в координаторы?
-        router = Navigation.instance.router
+        router = deps.router
     }
 
     private var counter: Int = 0

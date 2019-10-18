@@ -1,7 +1,6 @@
 package arch.module.skyeng.coordinators
 
 import android.util.Log
-import arch.module.skyeng.di.Navigation
 import arch.module.skyeng.ui.screenB.DonePressed
 import arch.module.skyeng.ui.screenB.ScreenB
 import arch.module.skyeng.ui.screenB.ScreenBOutCmd
@@ -14,14 +13,22 @@ sealed class ChildCoordinatorOutCmd
 
 object ChildCoordinatorDone : ChildCoordinatorOutCmd()
 
-class FlowBCoordinator : SerializableCoordinator() {
+interface FlowBCoordDependencies {
+    val router: Router
+}
+
+class FlowBCoordinator : SerializableCoordinator<FlowBCoordDependencies>() {
+
+    override val clazz: Class<FlowBCoordDependencies>
+        get() = FlowBCoordDependencies::class.java
+
 
     @Transient
     private lateinit var router: Router
 
-    override fun initDeps() {
+    override fun initDeps(deps: FlowBCoordDependencies) {
         Log.d("QWER", "$this RootCoordinator initDeps")
-        router = Navigation.instance.router
+        router = deps.router
     }
 
     init {

@@ -36,3 +36,6 @@ fun <T> Fragment.putOut(out: (T) -> Unit): Fragment {
         putSerializable("out", out as Serializable)
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+fun <D> Any.cast() = this as D
