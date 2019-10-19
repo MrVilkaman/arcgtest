@@ -12,6 +12,7 @@ android {
         targetSdkVersion toolVersions.targetSdkVersion
         versionCode 1
         versionName "0.0.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -43,5 +44,15 @@ dependencies {
 //    compileOnly "com.squareup.retrofit2:retrofit:$libVersions.retrofit"
 
     implementation "ru.terrakok.cicerone:cicerone:$libVersions.cicerone"
+
+    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.0.1'
+    androidTestImplementation "androidx.test:runner:$libVersions.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-web:$libVersions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$libVersions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$libVersions.espresso"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$libVersions.uiautomator"
+    androidTestImplementation "androidx.test.ext:junit:$libVersions.extJunit"
+    androidTestImplementation "com.agoda.kakao:kakao:$libVersions.kakao"
 
 }

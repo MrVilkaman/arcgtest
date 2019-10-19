@@ -28,9 +28,8 @@ class SkyengActivity : AppCompatActivity() {
         setContentView(R.layout.layout_skyeng)
 
         if (savedInstanceState == null || wasZhepka) {
-            val rootCoordinator = RootCoordinator()
             Toast.makeText(this, "cold start", Toast.LENGTH_SHORT).show()
-            rootCoordinator.showStartScreen()
+            RootCoordinator().showStartScreen()
         } else {
         }
 
