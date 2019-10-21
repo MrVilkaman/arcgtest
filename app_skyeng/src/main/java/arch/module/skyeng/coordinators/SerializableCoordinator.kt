@@ -12,18 +12,18 @@ abstract class SerializableCoordinator<CoordDeps : Any> : Serializable {
 
     protected abstract val clazz: Class<CoordDeps>
 
-    init {
+    /*init {
         doMagic()
     }
-
-    @Throws(IOException::class, ClassNotFoundException::class)
+*/
+    /*@Throws(IOException::class, ClassNotFoundException::class)
     private fun readObject(stream: java.io.ObjectInputStream) {
         Log.d("QWER", "$this  readObject")
         doMagic()
         stream.defaultReadObject()
     }
-
-    private fun doMagic() {
+*/
+    protected fun doMagic() {
         initDeps(CoordinatorDependenciesStore.getFor(clazz))
     }
 

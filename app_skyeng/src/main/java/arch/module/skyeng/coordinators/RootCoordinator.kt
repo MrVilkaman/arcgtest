@@ -6,6 +6,7 @@ import arch.module.skyeng.ui.screenB.DonePressed
 import arch.module.skyeng.ui.screenB.ScreenB
 import arch.module.skyeng.ui.screenB.ScreenBOutCmd
 import ru.terrakok.cicerone.Router
+import java.io.IOException
 import java.lang.ref.WeakReference
 
 interface RootCoordDependencies {
@@ -16,10 +17,30 @@ class RootCoordinator : SerializableCoordinator<RootCoordDependencies>() {
     override val clazz: Class<RootCoordDependencies>
         get() = RootCoordDependencies::class.java
 
-    init {
-        Log.d("QWER", "$this RootCoordinator init")
+    companion object {
+        var instance: RootCoordinator? = null
     }
 
+    init {
+        doMagic()
+        instance = this
+    }
+
+    @Throws(IOException::class, ClassNotFoundException::class)
+    private fun readObject(stream: java.io.ObjectInputStream) {
+        if (instance == null) {
+            instance = this
+
+            doMagic()
+            stream.defaultReadObject()
+        }
+    }
+
+
+    private fun readResolve(): Any? {
+        return if (instance != null) instance
+        else this
+    }
 
     @Transient
     private lateinit var router: Router
@@ -32,8 +53,8 @@ class RootCoordinator : SerializableCoordinator<RootCoordDependencies>() {
         screenAIn =
             WeakReference<ScreenAIn>(null) // в поле инициализация не катит при восстановлении
 
-        Log.d("QWER", "$this RootCoordinator initDeps")
         router = deps.router
+        Log.d("QWER", "$this RootCoordinator initDeps $router")
     }
 
     private var counter: Int = 0
@@ -44,16 +65,17 @@ class RootCoordinator : SerializableCoordinator<RootCoordDependencies>() {
                 is GoPressed -> router.navigateTo(ScreenB { outB: ScreenBOutCmd ->
                     when (outB) {
                         is DonePressed -> {
-                            screenAIn.get()?.done(++counter)
                             router.exit()
+                            screenAIn.get()?.done(++counter)
+                            Log.d("QWER", "DONE PRESSED ${screenAIn.get()} ${this}")
                         }
                     }
                 })
                 is ChildPressed -> FlowBCoordinator()() {
                     when (it) {
                         is ChildCoordinatorDone -> {
-                            screenAIn.get()?.coordinatorDone()
                             router.backTo(ScreenA())
+                            screenAIn.get()?.coordinatorDone()
                         }
                     }
                 }
@@ -65,7 +87,10 @@ class RootCoordinator : SerializableCoordinator<RootCoordDependencies>() {
                     }
                 })
 
-                is OnCreate -> screenAIn = WeakReference(outA.input)
+                is OnCreate -> {
+                    Log.d("QWER", "ON CREATE A ${this}")
+                    screenAIn = WeakReference(outA.input)
+                }
             }
         })
     }
